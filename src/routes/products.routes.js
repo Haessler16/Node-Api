@@ -1,19 +1,19 @@
 import { Router } from "express";
-const router = Router();
-import { isAdmin, isModerator, verifyToken } from "../middlewares";
+import {authJwt } from "../middlewares";
 import * as productsCtl from "../controllers/products.controllers";
+const router = Router();
 
 router.get("/", productsCtl.getProducts);
-router.post("/", [verifyToken, isModerator], productsCtl.createProducts);
+router.post("/", [authJwt.verifyToken, authJwt.isModerator], productsCtl.createProducts);
 router.get("/:productId", productsCtl.getProductsById);
 router.put(
   "/:productId",
-  [verifyToken, isAdmin],
+  [authJwt.verifyToken, authJwt.isAdmin],
   productsCtl.updateProductsById
 );
 router.delete(
   "/:productId",
-  [verifyToken, isAdmin],
+  [authJwt.verifyToken, authJwt.isAdmin],
   productsCtl.deleteProductsById
 );
 
